@@ -1,6 +1,6 @@
 def isPrime(n):
   isPrime = True
-  for i in range(0, n):
-    if (n % i) == 0 and i != 1:
+  for i in range(2, n):
+    if (n % i) == 0:
       isPrime = False
   return isPrime
