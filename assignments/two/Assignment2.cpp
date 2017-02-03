@@ -1,3 +1,9 @@
+/*
+Name: Krishna Dholakiya
+Assignment #2
+Instructor: Rhonda Hoenigman
+ */
+
 #include <iostream>;
 #include <fstream>;
 #include <sstream>;
@@ -9,6 +15,7 @@ struct Word {
   int count;
 };
 
+// finds index of a word within an array of Word structs
 int findWordIndex(Word *arrayOfWords, int lengthOfArray, string wordBeingFound) {
   int index = -1;
   for (int i = 0; i < lengthOfArray; i++) {
@@ -20,6 +27,7 @@ int findWordIndex(Word *arrayOfWords, int lengthOfArray, string wordBeingFound) 
   return index;
 }
 
+// array doubling logic
 void doubleWordArraySize(Word **arrayOfWords, int *currentSize, int *timesDoubled) {
   int desiredSize = *currentSize * 2;
   Word *doubledArray = new Word[desiredSize];
@@ -32,6 +40,7 @@ void doubleWordArraySize(Word **arrayOfWords, int *currentSize, int *timesDouble
   *timesDoubled = *timesDoubled + 1;
 }
 
+// determines whether or not word is to be counted
 bool isValidWord(string word) {
   bool status = true;
 
@@ -53,6 +62,9 @@ bool isValidWord(string word) {
   return status;
 }
 
+// opens file, filters thru lines/spaces, determines whether
+// word is already present in array; if word is present, increments its count,
+// otherwise adds word to array of structs
 void populateWordArray(Word **arrayOfWords, int *lengthOfArray, int *lengthUsed, string filename, int *timesDoubled, int *total) {
   ifstream words;
   words.open(filename, ifstream::in);
@@ -82,6 +94,7 @@ void populateWordArray(Word **arrayOfWords, int *lengthOfArray, int *lengthUsed,
   }
 }
 
+// uses insertion sort to sort words in array by count
 void sortWordArray(Word *arrayOfWords, int lengthUsed) {
   int j;
   int currentIndex = lengthUsed;
@@ -97,6 +110,7 @@ void sortWordArray(Word *arrayOfWords, int lengthUsed) {
   }
 }
 
+// prints words based on spec format
 void printWords(Word *arrayOfWords, int numToPrint) {
   for(int i = 0; i < numToPrint; i++) {
     cout << arrayOfWords[i].count << " - " << arrayOfWords[i].content << endl;
