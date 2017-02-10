@@ -16,7 +16,7 @@ struct Word {
 };
 
 // finds index of a word within an array of Word structs
-int findWordIndex(Word *arrayOfWords, int lengthOfArray, string wordBeingFound) {
+int findWordIndex(word *arrayOfWords, int lengthOfArray, string wordBeingFound) {
   int index = -1;
   for (int i = 0; i < lengthOfArray; i++) {
     if (arrayOfWords[i].content == wordBeingFound) {
