@@ -1,3 +1,9 @@
+/*
+  Name: Krishna Dholakiya
+  Instructor: Rhonda Hoenigman
+  Assignment #3
+ */
+
 #include <iostream>
 #include "WordAnalysis.h"
 #include <fstream>
