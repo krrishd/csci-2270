@@ -1,11 +1,12 @@
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include "CommunicationNetwork.h"
 
 using namespace std;
 
 CommunicationNetwork::CommunicationNetwork() {
-
+  head = NULL;
 }
 
 CommunicationNetwork::~CommunicationNetwork() {
@@ -13,7 +14,7 @@ CommunicationNetwork::~CommunicationNetwork() {
 }
 
 void CommunicationNetwork::buildNetwork() {
-  addCity("Los Angeles", "First");
+  addCity("Los Angeles", "");
   addCity("Phoenix", "Los Angeles");
   addCity("Denver", "Phoenix");
   addCity("Dallas", "Denver");
@@ -28,12 +29,12 @@ void CommunicationNetwork::buildNetwork() {
 
 void CommunicationNetwork::addCity(string cityName, string previousCity) {
   if (head == NULL) {
-    City *newCity = new City(cityName, NULL, "");
-    head = newCity;
-  } else if (previousCity == "First") {
-    City *oldHead = head; 
-    City *newCity = new City(cityName, oldHead, "");
-    head = newCity;
+    head = new City(cityName, NULL, "");
+    return;
+  }
+  if (previousCity == "First") {
+    City *oldHead = head;
+    head = new City(cityName, oldHead, "");
   } else {
     City *temp = head;
     City *newCity = new City(cityName, NULL, "");
@@ -41,38 +42,55 @@ void CommunicationNetwork::addCity(string cityName, string previousCity) {
       if (temp -> cityName == previousCity) {
         newCity -> next = temp -> next;
         temp -> next = newCity;
-        break;
+        return;
       }
       temp = temp -> next;
     }
-    
+    if (temp -> next == NULL) {
+      temp -> next = newCity;
+    }
   }
 }
 
-void CommunicationNetwork::transmitMsg(string msg) {
-  cout << "transmitting " << msg << endl;
-  stringstream ssline(msg);
+void CommunicationNetwork::transmitMsg(char * filename) {
+  fstream message;
+  string currentLine;
+  string messageStr;
+  message.open(filename, fstream::in);
+  while(getline(message, currentLine)) {
+    messageStr += currentLine + " ";
+  }
+  if (head == NULL) {
+    cout << "Empty list" << endl;
+    return;
+  }
+  stringstream ssline(messageStr);
   string currentWord;
+  City *temp;
+  City *previous;
   while(getline(ssline, currentWord, ' ')) {
-    cout << currentWord << endl;
-    City *temp = head;
-    City *previous;
-    while (temp -> next != NULL) {
+    temp = head;
+    previous = NULL;
+    while (temp != NULL) {
       if (previous == NULL) {
         temp -> message = currentWord;
       } else {
         temp -> message = previous -> message;
       }
-      cout << temp -> cityName << " received " << temp -> message << endl;
+      cout << temp -> cityName << " received " << currentWord << endl;
       previous = temp;
       temp -> message = "";
       temp = temp -> next;
     }
-    temp -> message = previous -> message;
+    /*temp -> message = previous -> message;*/
   }
 }
 
 void CommunicationNetwork::printNetwork() {
+  if (head == NULL) {
+    cout << "Empty list" << endl;
+    return;
+  }
   cout << "===CURRENT PATH===" << endl;
   City *temp = head;
   while (temp -> next != NULL) {

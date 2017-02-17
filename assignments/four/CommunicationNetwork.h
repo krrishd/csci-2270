@@ -22,7 +22,7 @@ class CommunicationNetwork {
     ~CommunicationNetwork();
     void addCity(std::string, std::string);
     void buildNetwork();
-    void transmitMsg(std::string); //this is like a string
+    void transmitMsg(char*); //this is like a string
     void printNetwork();
   protected:
   private:
