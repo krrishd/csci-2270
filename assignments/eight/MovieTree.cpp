@@ -4,7 +4,10 @@
 using namespace std;
 
 MovieTree::MovieTree() {
-  root = NULL;
+  nil = new MovieNode(0, "", 0, 0);
+  nil -> isRed = false;
+  nil -> leftChild = nil -> rightChild = nil;
+  root = nil;
 }
 
 MovieTree::~MovieTree() {
@@ -12,13 +15,13 @@ MovieTree::~MovieTree() {
 }
 
 void MovieTree::printMovieInventory(MovieNode * node) {
-  if (node -> leftChild != NULL) {
+  if (node -> leftChild != nil) {
     printMovieInventory(node -> leftChild);
   }
 
   cout << "Movie: " << node -> title << " " << node -> quantity << endl;
 
-  if (node -> rightChild != NULL) {
+  if (node -> rightChild != nil) {
     printMovieInventory(node -> rightChild);
   }
 }
@@ -42,20 +45,20 @@ int MovieTree::countMovieNodes() {
 void MovieTree::deleteMovieNode(string title) {
   MovieNode * temp =root;
 
-  while (temp != NULL){
+  while (temp != nil){
     if (temp->title == title){
-      if (temp->leftChild == NULL and temp->rightChild == NULL){
+      if (temp->leftChild == nil and temp->rightChild == nil){
         if (temp->parent->leftChild == temp){
-          temp->parent->leftChild = NULL;
+          temp->parent->leftChild = nil;
         } else{
-          temp->parent->rightChild = NULL;
+          temp->parent->rightChild = nil;
         }
         delete temp;
         break;
       }
-      if (temp->leftChild != NULL and temp->rightChild != NULL){
+      if (temp->leftChild != nil and temp->rightChild != nil){
         MovieNode * minNode = temp->rightChild;
-        while (minNode->leftChild != NULL){
+        while (minNode->leftChild != nil){
           minNode = minNode->leftChild;
         }
         if (minNode->parent == temp){
@@ -72,7 +75,7 @@ void MovieTree::deleteMovieNode(string title) {
           }
         } else{
           if (temp->parent->leftChild == temp){
-            if (minNode->rightChild != NULL){
+            if (minNode->rightChild != nil){
               minNode->parent->leftChild = minNode->rightChild;
               minNode->rightChild->parent = minNode->parent;
             }
@@ -83,7 +86,7 @@ void MovieTree::deleteMovieNode(string title) {
             temp->rightChild->parent = minNode;
             temp->leftChild->parent = minNode;
           } else{
-            if (minNode->rightChild != NULL){
+            if (minNode->rightChild != nil){
               minNode->parent->leftChild = minNode->rightChild;
               minNode->rightChild->parent = minNode->parent;
             }
@@ -131,7 +134,7 @@ void MovieTree::deleteMovieNode(string title) {
     }
   }
   
-  if (temp == NULL){
+  if (temp == nil){
     cout << "Movie not found." << endl;
   }
 }
@@ -139,12 +142,12 @@ void MovieTree::deleteMovieNode(string title) {
 void MovieTree::addMovieNode(int ranking, string title, int releaseYear, int quantity) {
   MovieNode * toAdd = new MovieNode(ranking, title, releaseYear, quantity);
   MovieNode * temp = root;
-  MovieNode * parent = NULL;
+  MovieNode * parent = nil;
 
-  if (root == NULL) {
+  if (root == nil) {
     root = toAdd;
   } else {
-    while (temp != NULL) {
+    while (temp != nil) {
       parent = temp;
       if ((parent -> title).compare(toAdd -> title) > 0) {
         temp = temp -> leftChild;
@@ -161,12 +164,14 @@ void MovieTree::addMovieNode(int ranking, string title, int releaseYear, int qua
       toAdd -> parent = parent;
     }
   }
+
+  // balancing time
 }
 
 void MovieTree::findMovie(string title) {
   bool found = false;
   MovieNode * temp = root;
-  while (temp != NULL) {
+  while (temp != nil) {
     if ((temp -> title).compare(title) > 0) {
       temp = temp -> leftChild;
     } else if ((temp -> title).compare(title) < 0) {
@@ -191,7 +196,7 @@ void MovieTree::findMovie(string title) {
 void MovieTree::rentMovie(string title) {
   bool found = false;
   MovieNode * temp = root;
-  while (temp != NULL) {
+  while (temp != nil) {
     if (temp -> title.compare(title) > 0) {
       temp = temp -> leftChild;
     } else if (temp -> title.compare(title) < 0) {
@@ -224,11 +229,11 @@ void MovieTree::rentMovie(string title) {
 }
 
 void MovieTree::DeleteAll(MovieNode * node) {
-  if (node -> leftChild != NULL) {
+  if (node -> leftChild != nil) {
     DeleteAll(node -> leftChild);
   }
 
-  if (node -> rightChild != NULL) {
+  if (node -> rightChild != nil) {
      DeleteAll(node -> rightChild);
   }
 
