@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-#include <queue>
+#include <vector>
+#include <algorithm>
 //TODO: add appropriate includes
 
 using namespace std;
