@@ -65,7 +65,10 @@ void Graph<T>::displayEdges() {
   for (int i = 0; i < vertices.size(); i++){
     cout << vertices[i].district << ":" << vertices[i].name << "-->";
     for (int j = 0; j < vertices[i].adj.size(); j++){
-      cout << vertices[i].adj[j].v->name << "***";
+      cout << vertices[i].adj[j].v->name;
+      if (j != vertices[i].adj.size() - 1) {
+        cout << "***";
+      }
     }
     cout << endl;
   }
@@ -73,30 +76,43 @@ void Graph<T>::displayEdges() {
 
 template<class T>
 void Graph<T>::assignDistricts() {
-  // assigning first vertex and all adjacent
-  vertices[0].district = 1;
-  for (int j = 0; j < vertices[0].adj.size(); j++) {
-    vertices[0].adj[j].v -> district = 1;
-  }
-
-  // assigning the rest
-  int currentDistrict = 2;
-  for (int i = 0; i < vertices.size(); i++) {
-    if (vertices[i].district == -1) { // if un-assigned
-      vertices[i].district = currentDistrict;
-      for (int k = 0; k < vertices[i].adj.size(); k++) {
-        if (vertices[i].adj[k].v -> district == -1) {
-          vertices[i].adj[k].v -> district = currentDistrict;
-        }
-      }
+  int district = 1;
+  for(int i = 0; i < vertices.size(); i++) {
+    if (vertices[i].district == -1) {
+      BFTraversalLabel(vertices[i].name, district);
+      district++;
     }
-    currentDistrict++;
   }
 }
 
 template<class T>
 void Graph<T>::BFTraversalLabel(T startingCity, int distID) {
+  queue<vertex<string>*> q;
 
+  for (int i = 0; i < vertices.size(); i++) {
+    vertices[i].visited = false;
+  }
+    
+  for (int i = 0; i < vertices.size(); i++) {
+    if (vertices[i].name == startingCity) {
+      vertices[i].visited = true;
+      q.push(&vertices[i]);
+      vertices[i].district = distID;
+      break;
+    }
+  }
+
+  while (q.empty() != true) {
+    vertex<string> * front = q.front();
+    q.pop();
+    for (int i = 0; i < front -> adj.size(); i++) {
+      if (front -> adj[i].v -> visited == false) {
+        front -> adj[i].v -> visited = true;
+        front -> adj[i].v -> district = distID;
+        q.push(front -> adj[i].v);
+      }
+    }
+  }
 }
 
 template<class T>

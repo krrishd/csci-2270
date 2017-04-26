@@ -1,3 +1,10 @@
+/*
+  Name: Krishna Dholakiya
+  Instructor: Rhonda Hoenigman
+  TA: Mridula Natarajan
+  Assignment #12
+ */
+
 #include <iostream>
 #include <vector>
 #include "Graph.h"

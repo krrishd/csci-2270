@@ -50,6 +50,6 @@ class Graph
 
 };
 
-//#include "Graph.cpp"
+#include "Graph.cpp"
 
-#endif //GRAPH_H
+#endif // GRAPH_H
