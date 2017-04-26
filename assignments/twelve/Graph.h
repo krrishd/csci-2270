@@ -43,7 +43,7 @@ class Graph
         void BFTraversalLabel(T startingCity, int distID);
         void shortestPath(T startingCity,T endingCity);
         vertex<T> * findVertex(T name);
-        void populateWithFileContents(std::string filename);
+        void populateWithFileContents(char* filename);
     protected:
     private:
         std::vector<vertex<T> > vertices;
